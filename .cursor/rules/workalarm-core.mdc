@@ -1,0 +1,40 @@
+---
+description: Core WorkAlarm / MoveBreak AI rules for every session
+alwaysApply: true
+---
+
+# MoveBreak AI (repo: WorkAlarm)
+
+School-project web app. Not medical software. Prefer a working demo over feature count.
+
+## Communication
+
+- Talk to the user in Thai.
+- Plans, code, commit messages, and file comments stay in English.
+
+## How to work
+
+- Read `docs/` before implementing. Docs are guidelines, not a rigid spec. Keep a reasonable existing structure; do not refactor just to match the folder tree.
+- Work one milestone at a time (~45 min) from `docs/05_45_MINUTE_TASK_PLAN.md`. Inspect the repo first. If a milestone is too large, split it.
+- After each milestone: run/build, fix obvious errors, summarize changes, list files, give a short manual test. Stop unless asked to continue.
+- No extra features, large unrelated refactors, or enterprise architecture. Prefer simple React hooks and modules.
+
+## V1 stack (only)
+
+React + Vite + TypeScript, Tailwind, MediaPipe Pose Landmarker (`@mediapipe/tasks-vision`), `getUserMedia()`, Canvas overlay, timestamp timer, Web Audio API, IndexedDB.
+
+## Forbidden in V1
+
+Backend, Firebase/Supabase, paid API, YOLO, OpenCV.js unless truly required, custom model training, uploading webcam frames.
+
+## Timer
+
+Source of truth: `targetTime = Date.now() + durationMs`. Remaining time is derived from `Date.now()`. Do not decrement a counter as truth.
+
+## Pose
+
+No inference queue — if inference is running, skip the frame. First exercise is **Both Arms Raised** (wrists above shoulders, landmarks visible, hold 3–5s). Do not complete on a single matching frame. Do not add more exercises until this one is reliable.
+
+## Safety / demo
+
+Include camera errors, no-person-detected, Emergency Skip, and a short demo timer (e.g. 10 seconds). Do not claim the app can force the user at OS level.
