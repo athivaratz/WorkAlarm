@@ -1,84 +1,56 @@
-# MoveBreak AI — Project Docs
+# WorkAlarm (MoveBreak AI)
 
-เว็บแอปสำหรับเตือนผู้ใช้ให้พักจากการนั่งเป็นเวลานาน และใช้กล้อง Webcam + MediaPipe Pose Landmarker ตรวจว่าผู้ใช้ทำท่าหรือการเคลื่อนไหวที่กำหนดจริงก่อนจบช่วงพัก
+WorkAlarm และ MoveBreak AI เป็น Code name ที่ใช้ระหว่างการพัฒนา ไม่ใช่ชื่อโปรเจกต์อย่างเป็นทางการ โครงการนี้เป็น Web Application ที่ช่วยเตือนให้ผู้ใช้ลุกพักและขยับร่างกายระหว่างทำงานหรือเรียนนาน ๆ
 
-> เป้าหมายของ V1 คือ “ทำแกนหลักให้ใช้ได้จริง” ไม่ใช่สร้างผลิตภัณฑ์ระดับ production
+## สถานะโครงการ
 
-## Core Flow
+โครงการนี้อยู่ระหว่างการพัฒนา โดยกำลังสร้างส่วนสำคัญของระบบให้ใช้งานได้ครบตามแนวคิดหลัก
 
-```text
-Start App
-  ↓
-Set / Start 45-minute work timer
-  ↓
-Time is up
-  ↓
-Alarm + Break Screen
-  ↓
-Open Webcam
-  ↓
-MediaPipe detects body landmarks
-  ↓
-Exercise Engine evaluates movement
-  ↓
-Hold / repeat until completed
-  ↓
-Stop alarm
-  ↓
-Save local break record
-  ↓
-Start next timer
-```
+## ภาพรวมโครงการ
 
-## V1 Technology Stack
+WorkAlarm ออกแบบมาเพื่อช่วยให้การพักระหว่างวันเกิดขึ้นจริง ไม่ใช่เพียงมีการแจ้งเตือนแล้วถูกปิดไป ระบบให้ผู้ใช้กำหนดช่วงเวลาโฟกัสงาน เมื่อครบเวลา แอปจะแสดงหน้าพักและชวนให้ลุกขึ้นเคลื่อนไหวตามท่าที่กำหนด
 
-| Part | Technology |
-|---|---|
-| Web UI | React + Vite + TypeScript |
-| Styling | Tailwind CSS |
-| Webcam | `navigator.mediaDevices.getUserMedia()` |
-| Pose AI | MediaPipe Pose Landmarker (`@mediapipe/tasks-vision`) |
-| Skeleton Overlay | Canvas 2D |
-| Timer | Timestamp-based JavaScript |
-| Alarm | Web Audio API |
-| Notification | Notification API |
-| PWA | Optional in late V1 |
-| Local Data | IndexedDB |
-| CV Processing | On-device / in browser |
-| Backend | None |
-| Database / Login | None in V1 |
-| YOLO | Not needed |
-| OpenCV.js | Not needed |
+แนวคิดของโครงการคือทำให้การพักเป็นส่วนหนึ่งของจังหวะการทำงาน ผู้ใช้จึงมีโอกาสเปลี่ยนอิริยาบถ ลดเวลาที่นั่งต่อเนื่อง และกลับไปทำงานต่อได้อย่างเป็นระบบมากขึ้น
 
-## Important Scope Rule
+## ปัญหาที่เราต้องการแก้
 
-Cursor may adjust internal implementation details when needed, but it should preserve these core principles:
+ผู้ที่ทำงานหน้าจอหรืออ่านหนังสือเป็นเวลานานมักจดจ่อกับงานจนลืมพัก การนั่งอยู่ท่าเดิมต่อเนื่องอาจทำให้รู้สึกเมื่อยล้าและไม่สบายตัว แม้หลายคนจะตั้ง Timer หรือ Alarm ไว้ แต่การแจ้งเตือนทั่วไปมักถูกปิดอย่างรวดเร็ว โดยที่ผู้ใช้ยังไม่ได้ลุกขึ้นพักจริง
 
-1. No backend in V1.
-2. Pose inference runs locally in the browser.
-3. Timer must be timestamp-based, not just decrementing a number every second.
-4. Alarm inside the app stops when the exercise is completed, or via a clearly labeled emergency skip.
-5. Keep the code understandable for a school project.
-6. Avoid unnecessary abstraction or enterprise-style architecture.
-7. Prioritize a working demo over feature count.
+ปัญหาจึงไม่ใช่แค่การเตือนเมื่อครบเวลา แต่คือการช่วยเปลี่ยนการเตือนให้กลายเป็นช่วงพักที่ผู้ใช้ได้ขยับร่างกายจริง
 
-## Documents
+## สิ่งที่เราทำ
 
-- `docs/01_PROJECT_HANDOFF.md` — project context and goals
-- `docs/02_REQUIREMENTS.md` — functional / non-functional requirements
-- `docs/03_ARCHITECTURE.md` — architecture, modules, data flow
-- `docs/04_EXERCISE_ENGINE_SPEC.md` — MediaPipe landmarks and movement logic
-- `docs/05_45_MINUTE_TASK_PLAN.md` — implementation plan split into ~45 minute tasks
-- `docs/06_TEST_PLAN.md` — practical testing checklist
-- `docs/07_CURSOR_MASTER_PROMPT.md` — prompt for a fresh Cursor chat
-- `docs/08_SCHOOL_REPORT_NOTES.md` — wording for school report / presentation
+ผู้ใช้สามารถเริ่ม Work Timer สำหรับช่วงโฟกัสงานได้ เมื่อเวลาสิ้นสุด ระบบจะเปลี่ยนไปยังหน้าพักเพื่อแนะนำให้ผู้ใช้ลุกขึ้นขยับร่างกาย โดยมีโหมด Demo ระยะสั้นสำหรับทดลองการทำงานของ Timer
 
-## Suggested Project Name
+ส่วนที่กำลังพัฒนาจะเชื่อมต่อ Webcam และใช้ Pose Detection เพื่อตรวจสอบการเคลื่อนไหวตามท่าพักที่กำหนด แนวทางนี้ช่วยให้ระบบไม่ได้ทำหน้าที่แค่แจ้งเตือน แต่ยังช่วยยืนยันว่าผู้ใช้ได้เริ่มพักและเคลื่อนไหวจริงก่อนจบช่วงพัก
 
-**MoveBreak AI**
+ลำดับการใช้งานหลักมีดังนี้
 
-Alternative names:
-- PostureBreak
-- BreakMotion
-- Move45
-- ActiveBreak AI
+1. ผู้ใช้เลือกและเริ่ม Work Timer
+2. ผู้ใช้ทำงานหรือเรียนในช่วงเวลาที่กำหนด
+3. เมื่อครบเวลา ระบบจะแสดงหน้าพัก
+4. ผู้ใช้ลุกขึ้นทำท่าพักหรือเคลื่อนไหวตามคำแนะนำ
+5. ระบบตรวจจับท่าทางและจบช่วงพักเมื่อทำตามเงื่อนไข
+
+
+
+## เทคโนโลยีที่ใช้
+
+
+| ส่วนงาน          | เทคโนโลยี                                       | หน้าที่                                                                                   |
+| ---------------- | ----------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| ส่วนติดต่อผู้ใช้ | React, Vite, TypeScript                         | สร้างหน้าแอปและจัดการการทำงานของหน้าจอ                                                    |
+| การจัดรูปแบบ     | Tailwind CSS                                    | กำหนดหน้าตาและ Layout ของ Web Application                                                 |
+| Timer            | JavaScript และ Timestamp-based timer            | คำนวณเวลาที่เหลือจากเวลาจริง เพื่อลดปัญหา Timer คลาดเคลื่อนเมื่อ Browser ไม่ได้อยู่หน้าจอ |
+| กล้อง            | Web API `navigator.mediaDevices.getUserMedia()` | ขอสิทธิ์และรับภาพจาก Webcam ของผู้ใช้                                                     |
+| การตรวจจับท่าทาง | MediaPipe Pose Landmarker                       | ระบุตำแหน่งข้อต่อและท่าทางของร่างกายจากภาพกล้อง                                           |
+| การประมวลผลภาพ   | On-device processing บน Browser                 | ประมวลผลข้อมูลบนอุปกรณ์ของผู้ใช้โดยไม่ต้องส่งภาพไปยัง Server                              |
+
+
+
+
+## แนวทางการทำงาน
+
+โครงการเน้นให้การทำงานหลักเกิดขึ้นบน Browser ของผู้ใช้ Timer อ้างอิงเวลาแบบ Timestamp แทนการลดตัวเลขทีละวินาที จึงช่วยให้เวลายังคงถูกต้องมากขึ้นเมื่อผู้ใช้สลับ Tab หรือกลับเข้ามาที่หน้าแอปอีกครั้ง
+
+สำหรับการตรวจจับท่าทาง ระบบจะใช้ภาพจาก Webcam เพื่อวิเคราะห์ Pose ของผู้ใช้ แล้วนำผลไปใช้ตรวจว่าการเคลื่อนไหวตรงตามเงื่อนไขของช่วงพักหรือไม่ ภาพและการประมวลผลจะทำงานบนอุปกรณ์ของผู้ใช้ตามแนวทางที่วางไว้สำหรับโครงการ
