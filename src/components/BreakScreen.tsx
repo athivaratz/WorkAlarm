@@ -1,14 +1,20 @@
 type BreakScreenProps = {
   onBack: () => void;
+  endedWhileAway: boolean;
 };
 
-export function BreakScreen({ onBack }: BreakScreenProps) {
+export function BreakScreen({ onBack, endedWhileAway }: BreakScreenProps) {
   return (
     <section className="flex w-full max-w-md flex-col items-center gap-6 text-center">
       <p className="text-sm font-medium uppercase tracking-wide text-amber-700">
         Break time
       </p>
       <h1 className="text-3xl font-semibold text-slate-900">Time to move</h1>
+      {endedWhileAway ? (
+        <p className="text-base text-slate-600">
+          Your work session ended while this page was closed.
+        </p>
+      ) : null}
       <p className="text-base text-slate-600">
         Stand in front of the camera and follow the exercise. Pose detection
         will confirm that you actually moved.
